@@ -129,7 +129,7 @@ void AzureIot::incomingDataFilter() {
         std::string props[size] = {prop1, prop2};
         std::string values[size] = {val1, val2};
 
-        int value;
+        int value = 0;
         bool sprinkle;
         for (int i = 0; i < size; i++) {
             if (props[i] == "sprinkle") {
@@ -144,12 +144,15 @@ void AzureIot::incomingDataFilter() {
             sensorsManager->sprink(sprinkle, value);
         }
     } else {
+        // TODO: faire une payload en mode "action: "reset || restart"
         std::string propName = data.substr(2, data.find(":") - 2);
         std::string propVal = data.substr(data.find(":") + 2, data.length() - 2);
         propName = propName.substr(0, propName.length() - 1);
         propVal = propVal.substr(0, propVal.length() - 2);
         if (propName == "reset" && propVal == "true") {
             ESPManager::reset();
+            ESPManager::restart();
+        } else if (propName == "restart" && propVal == "true") {
             ESPManager::restart();
         }
     }

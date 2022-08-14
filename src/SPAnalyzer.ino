@@ -5,7 +5,7 @@
 #include "BLEManager.h"
 #include "ESPManager.h"
 #include "WiFiManager.h"
-
+#include "StatusWebServer.h"
 // Additional sample headers #include "inc/AzIoTSasToken.h"
 #include "AzIoTSasToken.h"
 #include "SerialLogger.h"
@@ -20,6 +20,7 @@ BLEManager* bleManager;
 ESPManager* espManager;
 SensorsManager* sensorsManager;
 WiFiManager* wifiManager;
+StatusWebServer* webServer;
 
 void BLEOnReadCB(BLECharacteristic* pCharacteristic);
 void BLEOnWriteCB(BLECharacteristic* pCharacteristic);
@@ -106,13 +107,15 @@ void setup() {
     espManager->readEEPROM(&passwordSize, ssidSize + 1);
     ssid = espManager->readEEPROM(1, ssidSize);
     password = espManager->readEEPROM(ssidSize + 2, passwordSize);
-    wifiManager->config(ssid, password);
+    // wifiManager->config(ssid, password);
+    wifiManager->config("uifeedu75", "mandalorianBGdu75");
     if (wifiManager->connect()) {
       espManager->saveEEPROM(ssid);
       espManager->saveEEPROM(password);
       startAzure();
       sensorsManager->stopBlink();
       espManager->isReady = true;
+      webServer = new StatusWebServer();
       ESPManager::setGlobalState(ANALYZER_OK);
     } else {
       ESPManager::setGlobalState(ANALYZER_ERROR);
@@ -125,6 +128,7 @@ void loop() {
   if (!espManager->isReady) {
     
   } else if (espManager->isReady && ESPManager::getGlobalState() == ANALYZER_OK) {
+    webServer->listen();
     if (AzureIot::tokenExpired()) {
       Logger.Info("SAS token expired; reconnecting with a new one.");
       sensorsManager->startBlink(100);
