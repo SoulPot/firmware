@@ -116,6 +116,7 @@ void setup() {
       sensorsManager->stopBlink();
       espManager->isReady = true;
       webServer = new StatusWebServer();
+      webServer->begin();
       ESPManager::setGlobalState(ANALYZER_OK);
     } else {
       ESPManager::setGlobalState(ANALYZER_ERROR);

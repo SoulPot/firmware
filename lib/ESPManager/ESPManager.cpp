@@ -29,6 +29,27 @@ GlobalState ESPManager::getGlobalState() {
     return ESPManager::globalState;
 }
 
+String ESPManager::getHtmlState() {
+    String status;
+    switch(ESPManager::globalState) {
+        case ANALYZER_OK:
+            status = "Good";
+            break;
+        case ANALYZER_ERROR:
+            status = "Error";
+            break;
+        case ANALYZER_PAIRING:
+            status = "Pairing mode";
+            break;
+        default:
+            status = "UNKOWN";
+            break;
+    }
+    String state = "<h1>ANALYZER STATE HTML</h1>";
+    state += "<div>Global state: " + status + "</div>";
+    return state;
+}
+
 void ESPManager::restart() {
     Logger.Warning("********************SOULPOT_ANALYZER OS Rebooting...********************");
     delay(500);

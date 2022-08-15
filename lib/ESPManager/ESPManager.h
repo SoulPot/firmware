@@ -20,6 +20,7 @@ class ESPManager {
     ESPManager();
     bool isConfig();
     static void setGlobalState(GlobalState);
+    static String getHtmlState();
     static GlobalState getGlobalState();
     static void restart();
     static void reset();

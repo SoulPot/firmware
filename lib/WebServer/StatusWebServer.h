@@ -1,21 +1,30 @@
 
+#ifndef STATUS_WEB_SERVER
+#define STATUS_WEB_SERVER
+
 #include "WiFi.h"
+#include "WebServer.h"
+#include "ESPManager.h"
 
 class StatusWebServer {
     private:
-    static const unsigned long TIMEOUT = 2000; // ms 
+    static const unsigned long TIMEOUT = 5000; // ms 
+    static const unsigned short PORT = 80;
 
     unsigned long currentTime = 0;
-    unsigned long previousTime = 0; 
-    String index;
+    unsigned long previousTime = 0;
+    static String index;
 
-    WiFiServer server;
-    WiFiClient client;
+    static WebServer* server;
 
-    void NotFoundRoute();
+    static void routing();
+    static void homeRoute();
+    static void notFoundRoute();
 
     public:
     StatusWebServer();
+    void begin();
     void listen();
     void handleClient();
 };
+#endif
