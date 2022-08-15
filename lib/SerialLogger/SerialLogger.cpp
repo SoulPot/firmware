@@ -6,72 +6,84 @@
 
 #define UNIX_EPOCH_START_YEAR 1900
 
-static void writeTime()
+static String getTime()
 {
   struct tm* ptm;
   time_t now = time(NULL);
+  String time = "";
 
   ptm = gmtime(&now);
-
-  Serial.print(ptm->tm_year + UNIX_EPOCH_START_YEAR);
-  Serial.print("/");
-  Serial.print(ptm->tm_mon + 1);
-  Serial.print("/");
-  Serial.print(ptm->tm_mday);
-  Serial.print(" ");
+  time += ptm->tm_year + UNIX_EPOCH_START_YEAR;
+  time += "/";
+  time += ptm->tm_mon + 1;
+  time += "/";
+  time += ptm->tm_mday;
+  time += " ";
 
   if (ptm->tm_hour < 10)
   {
-    Serial.print(0);
+    time += "0";
   }
 
-  Serial.print(ptm->tm_hour);
-  Serial.print(":");
+  time += ptm->tm_hour;
+  time += ":";
 
   if (ptm->tm_min < 10)
   {
-    Serial.print(0);
+    time += "0";
   }
 
-  Serial.print(ptm->tm_min);
-  Serial.print(":");
+  time += ptm->tm_min;
+  time += ":";
 
   if (ptm->tm_sec < 10)
   {
-    Serial.print(0);
+    time += "0";
   }
 
-  Serial.print(ptm->tm_sec);
+  time += ptm->tm_sec;
+  return time;
 }
 
 SerialLogger::SerialLogger() { Serial.begin(SERIAL_LOGGER_BAUD_RATE); }
 
+void SerialLogger::log(Channel chan, String message) {
+  String channel = "";
+  if (chan == INFO)
+    channel = " [INFO] ";
+  else if (chan == ERROR)
+    channel = " [ERROR] ";
+  else if (chan == WARNING)
+    channel = " [WARNING] ";
+  else if (chan == DEBUG)
+    channel = " [DEBUG] ";
+  
+  String time = getTime();
+  Serial.print(time);
+  Serial.print(channel);
+  Serial.println(message);
+
+  // Saving last logs
+}
+
 void SerialLogger::Debug(String message)
 {
-  writeTime();
-  Serial.print(" [DEBUG] ");
-  Serial.println(message);
+  log(DEBUG, message);
 }
 
 void SerialLogger::Error(String message)
 {
-  writeTime();
-  Serial.print(" [ERROR] ");
-  Serial.println(message);
+  log(ERROR, message);
 }
 
 void SerialLogger::Info(String message)
 {
-  writeTime();
-  Serial.print(" [INFO] ");
-  Serial.println(message);
+  log(INFO, message);
 }
 
 void SerialLogger::Warning(String message)
 {
-  writeTime();
-  Serial.print(" [WARNING] ");
-  Serial.println(message);
+  log(WARNING, message);
 }
 
 SerialLogger Logger;
