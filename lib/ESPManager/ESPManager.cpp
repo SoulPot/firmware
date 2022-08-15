@@ -45,8 +45,12 @@ String ESPManager::getHtmlState() {
             status = "UNKOWN";
             break;
     }
-    String state = "ANALYZER STATE HTML";
+    String state = "<h3>NEW STATE :</h3>";
     state += "<div>Global state: " + status + "</div>";
+    for (int i = 0; i < Logger.logs.size(); i++) {
+        String line = Logger.logs.at(i);
+        state += line + "<br>";
+    }
     return state;
 }
 

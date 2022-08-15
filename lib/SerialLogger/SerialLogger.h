@@ -5,7 +5,7 @@
 #define SERIALLOGGER_H
 
 #include <Arduino.h>// #include <Vector.h>
-#include <Vector.h>
+#include <deque>
 
 #ifndef SERIAL_LOGGER_BAUD_RATE
 #define SERIAL_LOGGER_BAUD_RATE 115200
@@ -16,16 +16,15 @@ enum Channel {INFO, ERROR, WARNING, DEBUG};
 class SerialLogger
 {
 private:
-  Vector<String> logs;
   void log(Channel chan, String message);
 
 public:
   SerialLogger();
+  std::deque<String> logs;
   void Debug(String message);
   void Error(String message);
   void Info(String message);
   void Warning(String message);
-
 };
 
 extern SerialLogger Logger;
