@@ -48,7 +48,6 @@ String ESPManager::getHtmlState() {
     String state = "";
     state += "<div>Global state: " + status + "</div>\n";
     state += "<textarea id=\"logs\" rows=\"30\" cols=\"150\">";
-    Logger.Debug("LOGS LINES SIZE: " + String(Logger.logs.size()));
     for (int i = 0; i < Logger.logs.size(); i++) {
         String line = String (i) + " => " + Logger.logs.at(i);
         state += line + "\n";
