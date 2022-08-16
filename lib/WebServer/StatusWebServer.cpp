@@ -38,11 +38,11 @@ void StatusWebServer::homeRoute() {
     StatusWebServer::index += "    <link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'>";
     StatusWebServer::index += "</head>";
     StatusWebServer::index += "<body>";
-    StatusWebServer::index += "<div>SP Firmware status page</div>";
-
+    StatusWebServer::index += "<div><center>SP Firmware status page</center></div>";
     StatusWebServer::index += ESPManager::getHtmlState();
-
     StatusWebServer::index += "</body>";
     StatusWebServer::index += "</html>";
     StatusWebServer::server->send(200, "text/html", StatusWebServer::index);
+    StatusWebServer::server->client().stop();
+    StatusWebServer::index = "";
 }

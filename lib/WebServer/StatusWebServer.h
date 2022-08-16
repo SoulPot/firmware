@@ -5,6 +5,7 @@
 #include "WiFi.h"
 #include "WebServer.h"
 #include "ESPManager.h"
+#include "BLEManager.h"
 
 class StatusWebServer {
     private:

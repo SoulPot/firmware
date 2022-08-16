@@ -63,14 +63,10 @@ void SerialLogger::log(Channel chan, String message) {
   // Saving last logs
   String line = time + channel + message;
   Serial.println(line);
-  this->logs.push_back(line);
-  if(this->logs.size() > 50) {
+  if(this->logs.size() > MAX_LINES) {
     this->logs.pop_front();
-    for (int i = 0; i < this->logs.size() - 1; i++) {
-      this->logs[i] = this->logs[i+1];
-    }
-    this->logs.resize(10);
   }
+  this->logs.push_back(line);
 }
 
 void SerialLogger::Debug(String message)

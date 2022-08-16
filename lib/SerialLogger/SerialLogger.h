@@ -9,6 +9,7 @@
 
 #ifndef SERIAL_LOGGER_BAUD_RATE
 #define SERIAL_LOGGER_BAUD_RATE 115200
+#define MAX_LINES 50
 #endif
 
 enum Channel {INFO, ERROR, WARNING, DEBUG};
